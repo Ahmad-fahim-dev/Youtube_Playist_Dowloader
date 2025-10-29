@@ -116,36 +116,48 @@ def download_video():
         try:
             import yt_dlp
             
-            # Map quality to format codes
-            if format_type == 'mp3':
-                format_code = 'bestaudio/best'
-                postprocessors = [{
-                    'key': 'FFmpegExtractAudio',
-                    'preferredcodec': 'mp3',
-                    'preferredquality': '192',
-                }]
-            else:
-                quality_map = {
-                    '1080p': 'bestvideo[height<=1080]+bestaudio/best[height<=1080]',
-                    '720p': 'bestvideo[height<=720]+bestaudio/best[height<=720]',
-                    '480p': 'bestvideo[height<=480]+bestaudio/best[height<=480]',
-                    '360p': 'bestvideo[height<=360]+bestaudio/best[height<=360]'
-                }
-                format_code = quality_map.get(quality, 'best')
-                postprocessors = []
-            
             downloads_dir = os.path.join(os.getcwd(), 'downloads')
             os.makedirs(downloads_dir, exist_ok=True)
             
-            ydl_opts = {
-                'format': format_code,
-                'outtmpl': os.path.join(downloads_dir, '%(title)s.%(ext)s'),
-                'quiet': True,
-                'no_warnings': True,
-            }
+            # Progress tracking
+            progress_data = {'percent': 0, 'speed': '', 'eta': ''}
             
-            if postprocessors:
-                ydl_opts['postprocessors'] = postprocessors
+            def progress_hook(d):
+                if d['status'] == 'downloading':
+                    progress_data['percent'] = d.get('_percent_str', '0%').strip()
+                    progress_data['speed'] = d.get('_speed_str', 'N/A').strip()
+                    progress_data['eta'] = d.get('_eta_str', 'N/A').strip()
+                elif d['status'] == 'finished':
+                    progress_data['percent'] = '100%'
+                    progress_data['speed'] = 'Complete'
+                    progress_data['eta'] = '0s'
+            
+            # Map quality to format codes - use single format to avoid FFmpeg requirement
+            if format_type == 'mp3':
+                ydl_opts = {
+                    'format': 'bestaudio/best',
+                    'outtmpl': os.path.join(downloads_dir, '%(title)s.%(ext)s'),
+                    'quiet': False,
+                    'no_warnings': False,
+                    'progress_hooks': [progress_hook],
+                }
+            else:
+                # Use single format to avoid FFmpeg requirement
+                quality_map = {
+                    '1080p': 'best[height<=1080]',
+                    '720p': 'best[height<=720]',
+                    '480p': 'best[height<=480]',
+                    '360p': 'best[height<=360]'
+                }
+                
+                ydl_opts = {
+                    'format': quality_map.get(quality, 'best'),
+                    'outtmpl': os.path.join(downloads_dir, '%(title)s.%(ext)s'),
+                    'quiet': False,
+                    'no_warnings': False,
+                    'progress_hooks': [progress_hook],
+                    'merge_output_format': 'mp4',
+                }
             
             video_url = f'https://www.youtube.com/watch?v={video_id}'
             
