@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Download YouTube playlists instantly. Fast, secure, and free YouTube playlist downloader. Convert videos to MP4 in HD quality with no limits.">
+    <meta name="keywords" content="youtube downloader, playlist downloader, youtube to mp4, video downloader, free youtube download, batch download, HD quality">
+    <meta name="author" content="YT Downloader">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="YouTube Playlist Downloader - Fast & Free">
+    <meta property="og:description" content="Download entire YouTube playlists instantly. Fast, secure, and completely free with HD quality support.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/static/og-preview.jpg">
+    
+    <title>YouTube Playlist Downloader - Fast, Free & Secure</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>▶️</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Animated background particles -->
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo-brand">
+            <i class="fab fa-youtube"></i>
+            <span>YT Downloader</span>
+        </div>
+
+        <div class="nav-links">
+            <a href="#home" class="nav-link active">Home</a>
+            <a href="#features" class="nav-link">Features</a>
+        </div>
+
+        <div class="nav-controls">
+            <button class="theme-toggle" id="theme-toggle-btn" title="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section id="home" class="hero-section">
+                <h1 class="hero-headline">
+                    Download YouTube Playlists
+                    <span class="gradient-text">Instantly</span>
+                </h1>
+                <p class="hero-subheadline">
+                    Fast, secure, and free. Paste your YouTube playlist URL and download all videos in your preferred quality.
+                </p>
+                
+                <!-- CTA Input Section -->
+                <div class="hero-cta-section">
+                    <div class="input-section">
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope input-icon"></i>
+                    <input type="url" id="playlist-url" placeholder="https://www.youtube.com/playlist?list=..." autocomplete="off">
+                            <button id="clear-input" class="clear-btn" style="display: none;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <button id="hero-cta-btn" class="btn glow-btn hero-btn">
+                            <i class="fas fa-download"></i> Fetch Playlist
+                        </button>
+                    </div>
+
+                    <!-- Info Note -->
+                    <div class="info-note">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Large playlists may take time to process. Please be patient.</span>
+                    </div>
+                </div>
+                
+                <!-- Trust Badges -->
+                <div class="trust-badges">
+                    <div class="badge-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>100% Secure</span>
+                    </div>
+                    <div class="badge-item">
+                        <i class="fas fa-bolt"></i>
+                        <span>Fast Downloads</span>
+                    </div>
+                    <div class="badge-item">
+                        <i class="fas fa-gift"></i>
+                        <span>Free Forever</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Delete How It Works Section -->
+        <!-- Features Section -->
+        <section id="features" class="value-section">
+            <div class="section-header">
+                <h2>Features</h2>
+                <p>Simple and powerful playlist downloading</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3>Batch Downloads</h3>
+                    <p>Download entire playlists with all videos in one click.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <h3>Quality Control</h3>
+                    <p>Choose from 360p to 1080p HD quality for your videos.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Safe & Secure</h3>
+                    <p>Your data is private. No tracking, no storing information.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Delete How It Works Section -->
+        
+        <!-- Delete Testimonials Section -->
+        <!-- Playlist Preview / Progress Section -->
+        <section id="playlist-preview" class="playlist-section" style="display: none;">
+            <div class="section-header">
+                <h2>Playlist Videos</h2>
+                <p id="playlist-title">Loading playlist...</p>
+            </div>
+            
+            <!-- Quality Selector -->
+            <div class="quality-selector-container">
+                <label for="quality-select">
+                    <i class="fas fa-cog"></i> Quality:
+                </label>
+                <select id="quality-select" class="quality-select">
+                    <option value="1080p">1080p HD</option>
+                    <option value="720p" selected>720p HD</option>
+                    <option value="480p">480p</option>
+                    <option value="360p">360p</option>
+                </select>
+                <label for="download-format">
+                    <i class="fas fa-file-video"></i> Format:
+                </label>
+                <select id="download-format" class="quality-select">
+                    <option value="mp4" selected>MP4 (Video)</option>
+                    <option value="mp3">MP3 (Audio)</option>
+                </select>
+                <button id="browse-location-btn" class="btn secondary-btn" title="Choose download folder">
+                    <i class="fas fa-folder-open"></i> Browse Location
+                </button>
+                <button id="download-all-videos" class="btn glow-btn">
+                    <i class="fas fa-download"></i> Download All (<span id="total-videos">0</span>)
+                </button>
+            </div>
+            
+            <!-- Download Location Display -->
+            <div id="download-location-display" class="location-display" style="display: none;">
+                <i class="fas fa-folder"></i>
+                <span id="location-path">Browser's default download folder</span>
+                <button id="clear-location" class="clear-location-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Videos Grid -->
+            <div id="videos-container" class="videos-grid">
+                <!-- Videos will be dynamically inserted here -->
+            </div>
+        </section>
+        
+        <!-- Delete Contact Section -->
+        
+        <!-- Delete Final CTA Section -->
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fab fa-youtube"></i> YT Downloader</h3>
+                    <p>The fastest and most reliable YouTube playlist downloader. Download entire playlists in HD quality, completely free with no registration required.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-icon" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon" title="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon" title="GitHub"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Features</h4>
+                    <ul>
+                        <li><a href="#features">Batch Downloads</a></li>
+                        <li><a href="#features">HD Quality</a></li>
+                        <li><a href="#features">Fast & Secure</a></li>
+                        <li><a href="#features">100% Free</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> support@ytdownloader.com</li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 YT Downloader. All rights reserved. Made with <i class="fas fa-heart" style="color: #e50914;"></i> | <a href="#">Privacy</a> • <a href="#">Terms</a></p>
+            </div>
+        </footer>
+        
+        <!-- Enhanced Toast Notifications -->
+        <div class="toast" id="toast">
+            <i class="toast-icon"></i>
+            <span class="toast-message"></span>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
