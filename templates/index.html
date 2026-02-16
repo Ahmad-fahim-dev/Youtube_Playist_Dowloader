@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Download YouTube playlists instantly. Fast, secure, and free YouTube playlist downloader.">
+    <meta name="author" content="YT Downloader">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="YT Downloader - Vintage Edition">
+    <meta property="og:description"
+        content="Download entire YouTube playlists instantly with a premium, minimal interface.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://i.ytimg.com/vi/aqz-KE-bpKQ/maxresdefault.jpg">
+
+    <title>YT Downloader - Premium Playlist Tool</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='0' fill='%23e50914'/><path d='M35 30l35 20-35 20z' fill='white'/></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="/" class="logo-brand">
+                    YT Downloader
+                </a>
+
+                <div class="nav-links">
+                    <a href="#home" class="nav-link active">Tool</a>
+                    <a href="#features" class="nav-link">About</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Tool Section -->
+        <section id="home" class="hero-section">
+            <h1 class="hero-headline">
+                Archive YouTube <br>
+                <span class="gradient-text">Efficiently</span>
+            </h1>
+            <p class="hero-subheadline">
+                High-fidelity video extraction. Minimalist processing. Free of charge.
+            </p>
+
+            <!-- Tab Selector -->
+            <div class="download-tabs">
+                <button class="tab-btn active" data-tab="single">Single Video</button>
+                <button class="tab-btn" data-tab="playlist">Playlist</button>
+            </div>
+
+            <!-- Single Video Download Section -->
+            <div class="tab-content active" id="single-tab">
+                <div class="hero-cta-section">
+                    <div class="input-section">
+                        <div class="input-wrapper">
+                            <i class="fas fa-link input-icon"></i>
+                            <input type="url" id="video-url" placeholder="Paste Video URL..." autocomplete="off">
+                        </div>
+                        <button id="load-video-btn" class="btn glow-btn">
+                            Load Info
+                        </button>
+                    </div>
+
+                    <!-- Video Info Display -->
+                    <div id="video-info-section" class="video-info-section" style="display: none;">
+                        <div class="video-preview-card">
+                            <img id="video-thumbnail" src="" alt="Thumbnail" class="video-preview-thumb">
+                            <div class="video-preview-details">
+                                <h3 id="video-title">Video Title</h3>
+                                <p id="video-duration"><i class="fas fa-clock"></i> <span>N/A</span></p>
+                                <p id="video-author"><i class="fas fa-user"></i> <span>N/A</span></p>
+
+                                <div class="quality-selector-inline">
+                                    <select id="single-quality-select" class="quality-select">
+                                        <option value="1080p">1080p</option>
+                                        <option value="720p" selected>720p</option>
+                                        <option value="480p">480p</option>
+                                    </select>
+                                    <select id="single-download-format" class="quality-select">
+                                        <option value="mp4" selected>MP4</option>
+                                        <option value="mp3">MP3</option>
+                                    </select>
+                                    <button id="download-video-btn" class="btn glow-btn">
+                                        Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Display -->
+                    <div id="single-download-progress" class="download-progress-container" style="display: none;">
+                        <div class="progress-header">
+                            <h3>Processing...</h3>
+                            <span id="single-progress-percent">0%</span>
+                        </div>
+                        <div class="progress-bar-wrapper">
+                            <div class="progress-bar-fill" id="single-progress-fill"></div>
+                        </div>
+                        <div class="progress-stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-label">Speed</span>
+                                <span class="stat-value" id="single-speed">0 MB/s</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">ETA</span>
+                                <span class="stat-value" id="single-eta">N/A</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Playlist Download Section -->
+            <div class="tab-content" id="playlist-tab">
+                <div class="hero-cta-section">
+                    <div class="input-section">
+                        <div class="input-wrapper">
+                            <i class="fas fa-list input-icon"></i>
+                            <input type="url" id="playlist-url" placeholder="Paste Playlist URL..." autocomplete="off">
+                        </div>
+                        <button id="hero-cta-btn" class="btn glow-btn">
+                            Fetch Playlist
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Playlist Preview Section -->
+        <section id="playlist-preview" class="playlist-section" style="display: none;">
+            <div class="section-header">
+                <h2>Playlist Hub</h2>
+                <p id="playlist-title">Ready for batch extraction.</p>
+
+                <div class="quality-selector-inline" style="margin-top: 30px;">
+                    <select id="quality-select" class="quality-select">
+                        <option value="1080p">1080p</option>
+                        <option value="720p" selected>720p</option>
+                    </select>
+                    <select id="download-format" class="quality-select">
+                        <option value="mp4" selected>MP4</option>
+                        <option value="mp3">MP3</option>
+                    </select>
+                    <button id="download-all-videos" class="btn glow-btn">
+                        Download All (<span id="total-videos">0</span>)
+                    </button>
+                </div>
+            </div>
+
+            <div id="videos-container" class="videos-grid">
+                <!-- Dynamic Content -->
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="playlist-section">
+            <div class="section-header">
+                <h2>Capabilities</h2>
+                <p>Advanced media extraction tools.</p>
+            </div>
+            <div class="features-grid"
+                style="margin-top: 60px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px;">
+                <div class="feature-card"
+                    style="padding: 40px; border: 1px solid var(--border-dim); background: var(--bg-alt);">
+                    <h3
+                        style="font-family: 'Playfair Display', serif; color: var(--primary); margin-bottom: 15px; text-transform: uppercase;">
+                        Fast Extraction</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-dim);">High-speed multi-threaded downloads. We
+                        optimize every connection to ensure your media is archived rapidly and with maximum fidelity.
+                    </p>
+                </div>
+                <div class="feature-card"
+                    style="padding: 40px; border: 1px solid var(--border-dim); background: var(--bg-alt);">
+                    <h3
+                        style="font-family: 'Playfair Display', serif; color: var(--primary); margin-bottom: 15px; text-transform: uppercase;">
+                        Playlist Hub</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-dim);">Effortless batch processing. Paste a single
+                        playlist link to extract and archive dozens of videos simultaneously in high definition.</p>
+                </div>
+                <div class="feature-card"
+                    style="padding: 40px; border: 1px solid var(--border-dim); background: var(--bg-alt);">
+                    <h3
+                        style="font-family: 'Playfair Display', serif; color: var(--primary); margin-bottom: 15px; text-transform: uppercase;">
+                        Single Video</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-dim);">Precision downloading for individual tracks or
+                        clips. Select your preferred resolution and format for a tailor-made archiving experience.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Archivist</h3>
+                    <p>A specialized utility for media preservation. Minimalist, premium, and focused on performance.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="https://github.com/Ahmad-fahim-dev/Youtube_Playist_Dowloader" target="_blank"
+                            title="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/ahmad-fahim-594188350" target="_blank" title="LinkedIn"><i
+                                class="fab fa-linkedin"></i></a>
+                        <a href="https://x.com/ahmadfahim64754" target="_blank" title="Twitter"><i
+                                class="fab fa-x-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> af684568@gmail.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom"
+                style="margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border-dim); text-align: center; font-size: 0.85rem; color: var(--text-dim);">
+                <p>&copy; 2025 YT Downloader. All rights reserved. Made By Ahmad Fahim with Love</p>
+            </div>
+        </footer>
+
+        <!-- Toast Notifications -->
+        <div class="toast" id="toast">
+            <span class="toast-message"></span>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
